@@ -1,0 +1,164 @@
+{
+  "name": "linter-eslint-node",
+  "main": "./lib/main",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [
+    "linter-eslint",
+    "eslint"
+  ],
+  "repository": "https://github.com/AtomLinter/linter-eslint-node",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-import": "^2.25.4",
+    "rimraf": "^3.0.2"
+  },
+  "package-deps": [
+    {
+      "name": "linter",
+      "minimumVersion": "3.3.0"
+    }
+  ],
+  "providedServices": {
+    "linter": {
+      "versions": {
+        "2.0.0": "provideLinter"
+      }
+    }
+  },
+  "activationHooks": [
+    "core:loaded-shell-environment"
+  ],
+  "configSchema": {
+    "scopes": {
+      "title": "List of scopes to run ESLint on. Run `Editor: Log Cursor Scope` to determine the scopes for a file.",
+      "type": "array",
+      "default": [
+        "source.js",
+        "source.jsx",
+        "source.js.jsx",
+        "source.flow",
+        "source.babel",
+        "source.js-semantic",
+        "source.ts"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "order": 1
+    },
+    "lintHtmlFiles": {
+      "title": "Lint HTML files",
+      "description": "You should also add `eslint-plugin-html` to your `.eslintrc` file.",
+      "type": "boolean",
+      "default": false,
+      "order": 2
+    },
+    "warnAboutOldEslint": {
+      "title": "Warn about old ESLint versions",
+      "description": "If your project’s ESLint is too old for this package to support, and you don’t have `linter-eslint` installed, you’ll see a single warning message after your first lint attempt, and no further messages until you reopen the project. If you’d rather not receive the warning under any circumstances, disable this option.",
+      "type": "boolean",
+      "default": true,
+      "order": 3
+    },
+    "nodeBin": {
+      "title": "Path to Node binary",
+      "description": "The path to the version of Node that this linter should run. If you have one global installation of node, `which node` should give you the correct value. If you use NVM or another Node version manager, `which node` within this project's directory should give you the correct value. If you need this value to vary on a per-project basis, consult the README for various options.",
+      "type": "string",
+      "default": "node",
+      "order": 4
+    },
+    "autofix": {
+      "type": "object",
+      "order": 5,
+      "title": "Automatic Fixes",
+      "properties": {
+        "fixOnSave": {
+          "title": "Fix errors on save",
+          "description": "Have ESLint automatically apply any fixes when linting on save.",
+          "type": "boolean",
+          "default": false,
+          "order": 1
+        },
+        "rulesToDisableWhileFixing": {
+          "title": "Disable specific rules from fixes",
+          "description": "Rules in this list will never have fixes applied, whether during a save or when running the `Linter Eslint: Fix File` command.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "order": 2
+        },
+        "ignoreFixableRulesWhileTyping": {
+          "title": "Ignore fixable rules while typing",
+          "description": "Ignore all violations that have fixes. Applies to linting that happens due to document changes. Does not apply to lint-on-save.",
+          "type": "boolean",
+          "default": false,
+          "order": 3
+        }
+      }
+    },
+    "disabling": {
+      "type": "object",
+      "order": 7,
+      "properties": {
+        "disableWhenNoEslintConfig": {
+          "title": "Disable when no ESLint config is found",
+          "description": "Will skip linting when no ESLint config is found in either `.package.json` or `.eslintrc`.",
+          "type": "boolean",
+          "default": true,
+          "order": 1
+        },
+        "rulesToSilenceWhileTyping": {
+          "title": "Silence specific rules while typing",
+          "description": "Useful when Atom fixes errors on save like `no-trailing-spaces` or `eol-last`.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "order": 2
+        }
+      }
+    },
+    "advanced": {
+      "type": "object",
+      "collapsed": true,
+      "title": "Uncommon",
+      "order": 8,
+      "properties": {
+        "disableEslintIgnore": {
+          "title": "Disregard .eslintignore",
+          "description": "Lint all files, even files mentioned in a project's `.eslintignore` file.",
+          "type": "boolean",
+          "default": false,
+          "order": 1
+        },
+        "showRuleIdInMessage": {
+          "title": "Show Rule ID in Messages",
+          "type": "boolean",
+          "default": true,
+          "order": 2
+        },
+        "localNodeModules": {
+          "title": "Path to local `node_modules`",
+          "description": "Only specify if `node_modules` isn't in the project root. This should be a relative path from your project root.",
+          "type": "string",
+          "default": "",
+          "order": 3
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "atom-linter": "^10.0.0",
+    "atom-package-deps": "^8.0.0",
+    "compare-versions": "^4.1.3",
+    "eslint": "^8.9.0",
+    "ndjson": "^2.0.0"
+  }
+}
