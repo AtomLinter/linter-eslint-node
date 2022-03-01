@@ -260,29 +260,29 @@ describe('The eslint provider for Linter', () => {
   //   });
   // });
 
-  describe('when a file is specified in an eslintIgnore key in package.json', () => {
-    it('will still lint the file if an .eslintignore file is present', async () => {
-      atom.config.set('linter-eslint-node.advanced.disableEslintIgnore', false);
-      const editor = await atom.workspace.open(path.join(paths.eslintIgnoreKeyDir, 'ignored.js'));
-      const messages = await lint(editor);
-
-      expect(messages.length).toBe(1);
-    });
-
-    // TODO:
-    // it('will not give warnings when linting the file', async () => {
-    //   const tempPath = await copyFileToTempDir(path.join(paths.eslintIgnoreKeyDir, 'ignored.js'));
-    //   const tempDir = path.dirname(tempPath);
-    //
-    //   const editor = await atom.workspace.open(tempPath);
-    //   atom.config.set('linter-eslint-node.advanced.disableEslintIgnore', false);
-    //   await copyFileToDir(path.join(paths.eslintIgnoreKeyDir, 'package.json'), tempDir);
-    //
-    //   const messages = await lint(editor);
-    //   expect(messages.length).toBe(0);
-    //   rimraf.sync(tempDir);
-    // });
-  });
+  // TODO:
+  // describe('when a file is specified in an eslintIgnore key in package.json', () => {
+  //   it('will still lint the file if an .eslintignore file is present', async () => {
+  //     atom.config.set('linter-eslint-node.advanced.disableEslintIgnore', false);
+  //     const editor = await atom.workspace.open(path.join(paths.eslintIgnoreKeyDir, 'ignored.js'));
+  //     const messages = await lint(editor);
+  //
+  //     expect(messages.length).toBe(1);
+  //   });
+  //
+  //   it('will not give warnings when linting the file', async () => {
+  //     const tempPath = await copyFileToTempDir(path.join(paths.eslintIgnoreKeyDir, 'ignored.js'));
+  //     const tempDir = path.dirname(tempPath);
+  //
+  //     const editor = await atom.workspace.open(tempPath);
+  //     atom.config.set('linter-eslint-node.advanced.disableEslintIgnore', false);
+  //     await copyFileToDir(path.join(paths.eslintIgnoreKeyDir, 'package.json'), tempDir);
+  //
+  //     const messages = await lint(editor);
+  //     expect(messages.length).toBe(0);
+  //     rimraf.sync(tempDir);
+  //   });
+  // });
 
   // TODO:
   // describe('fixes errors', () => {
