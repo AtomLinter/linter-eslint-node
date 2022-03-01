@@ -20,6 +20,9 @@ jobs:
       - uses: UziTech/action-setup-atom@v2
         with:
           version: ${{ matrix.atom_channel }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
       - name: Install dependencies
         run: |
           apm install
