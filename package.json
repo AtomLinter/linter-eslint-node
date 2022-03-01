@@ -13,6 +13,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "devDependencies": {
+    "atom-jasmine3-test-runner": "^5.2.11",
     "eslint-plugin-import": "^2.25.4",
     "rimraf": "^3.0.2"
   },
@@ -154,6 +155,12 @@
       }
     }
   },
+  "scripts": {
+    "lint": "eslint . --fix",
+    "test.lint": "eslint .",
+    "test": "atom --test spec"
+  },
+  "atomTestRunner": "./spec/runner",
   "dependencies": {
     "atom-linter": "^10.0.0",
     "atom-package-deps": "^8.0.0",
