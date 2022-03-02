@@ -190,7 +190,7 @@ describe('The eslint provider for Linter', () => {
     const messages = await lint(editor);
 
     expect(messages[0].solutions[0].position).toEqual([[0, 10], [1, 8]]);
-    expect(messages[0].solutions[0].replaceWith).toBe('6\nfunction');
+    expect(messages[0].solutions[0].replaceWith).toMatch(/^6\s+function$/);
 
     expect(messages[1].solutions[0].position).toEqual([[2, 0], [2, 1]]);
     expect(messages[1].solutions[0].replaceWith).toBe('  ');
