@@ -727,7 +727,7 @@ describe('The eslint provider for Linter', () => {
         itemSet.selector === 'atom-text-editor:not(.mini), .overlayer'
         && itemSet.items.some((item) => (
           // Matching command...
-          item.command === 'linter-eslint:fix-file'
+          item.command === 'linter-eslint-node:fix-file'
           // Matching label
           && item.label === 'ESLint Fix'
           // And has a function controlling display
