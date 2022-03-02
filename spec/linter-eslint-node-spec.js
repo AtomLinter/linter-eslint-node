@@ -3,7 +3,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { tmpdir } from 'os';
-// import rimraf from 'rimraf';
+import rimraf from 'rimraf';
 import linterEslintNode from '../lib/main';
 
 const fixturesDir = path.join(__dirname, 'fixtures');
@@ -146,23 +146,23 @@ describe('The eslint provider for Linter', () => {
       const messages = await lint(editor);
       expect(messages.length).toBe(2);
 
-      const expected0 = "[no-undef] 'foo' is not defined.";
-      // TODO: const expected0Url = 'https://eslint.org/docs/rules/no-undef';
-      const expected1 = '[semi] Extra semicolon.';
-      // TODO: const expected1Url = 'https://eslint.org/docs/rules/semi';
+      const expected0 = "'foo' is not defined. (no-undef)";
+      const expected0Url = 'https://eslint.org/docs/rules/no-undef';
+      const expected1 = 'Extra semicolon. (semi)';
+      const expected1Url = 'https://eslint.org/docs/rules/semi';
 
       console.log(messages);
 
       expect(messages[0].severity).toBe('error');
       expect(messages[0].excerpt).toBe(expected0);
-      // TODO: expect(messages[0].url).toBe(expected0Url);
+      expect(messages[0].url).toBe(expected0Url);
       expect(messages[0].location.file).toBe(paths.bad);
       expect(messages[0].location.position).toEqual([[0, 0], [0, 3]]);
       expect(messages[0].solutions).not.toBeDefined();
 
       expect(messages[1].severity).toBe('error');
       expect(messages[1].excerpt).toBe(expected1);
-      // TODO: expect(messages[1].url).toBe(expected1Url);
+      expect(messages[1].url).toBe(expected1Url);
       expect(messages[1].location.file).toBe(paths.bad);
       expect(messages[1].location.position).toEqual([[0, 8], [0, 9]]);
       expect(messages[1].solutions.length).toBe(1);
@@ -207,13 +207,13 @@ describe('The eslint provider for Linter', () => {
     it('shows a message for an invalid import', async () => {
       const editor = await atom.workspace.open(paths.badImport);
       const messages = await lint(editor);
-      const expected = "[import/no-unresolved] Unable to resolve path to module '../nonexistent'.";
-      // TODO: const expectedUrlRegEx = /https[\S]+eslint-plugin-import[\S]+no-unresolved.md/;
+      const expected = "Unable to resolve path to module '../nonexistent'. (import/no-unresolved)";
+      const expectedUrlRegEx = /https[\S]+eslint-plugin-import[\S]+no-unresolved.md/;
 
       expect(messages.length).toBe(1);
       expect(messages[0].severity).toBe('error');
       expect(messages[0].excerpt).toBe(expected);
-      // TODO: expect(messages[0].url).toMatch(expectedUrlRegEx);
+      expect(messages[0].url).toMatch(expectedUrlRegEx);
       expect(messages[0].location.file).toBe(paths.badImport);
       expect(messages[0].location.position).toEqual([[0, 24], [0, 40]]);
       expect(messages[0].solutions).not.toBeDefined();
@@ -369,22 +369,22 @@ describe('The eslint provider for Linter', () => {
     let expectedPath;
 
     const checkNoConsole = (message) => {
-      const text = '[no-console] Unexpected console statement.';
-      // TODO: const url = 'https://eslint.org/docs/rules/no-console';
+      const text = 'Unexpected console statement. (no-console)';
+      const url = 'https://eslint.org/docs/rules/no-console';
       expect(message.severity).toBe('error');
       expect(message.excerpt).toBe(text);
-      // TODO: expect(message.url).toBe(url);
+      expect(message.url).toBe(url);
       expect(message.location.file).toBe(expectedPath);
       expect(message.location.position).toEqual([[0, 0], [0, 11]]);
     };
 
     const checkNoTrailingSpace = (message) => {
-      const text = '[no-trailing-spaces] Trailing spaces not allowed.';
-      // TODO: const url = 'https://eslint.org/docs/rules/no-trailing-spaces';
+      const text = 'Trailing spaces not allowed. (no-trailing-spaces)';
+      const url = 'https://eslint.org/docs/rules/no-trailing-spaces';
 
       expect(message.severity).toBe('error');
       expect(message.excerpt).toBe(text);
-      // TODO: expect(message.url).toBe(url);
+      expect(message.url).toBe(url);
       expect(message.location.file).toBe(expectedPath);
       expect(message.location.position).toEqual([[1, 9], [1, 10]]);
     };
@@ -527,12 +527,12 @@ describe('The eslint provider for Linter', () => {
   it('handles ranges in messages', async () => {
     const editor = await atom.workspace.open(paths.endRange);
     const messages = await lint(editor);
-    const expected = '[no-unreachable] Unreachable code.';
-    // TODO: const expectedUrl = 'https://eslint.org/docs/rules/no-unreachable';
+    const expected = 'Unreachable code. (no-unreachable)';
+    const expectedUrl = 'https://eslint.org/docs/rules/no-unreachable';
 
     expect(messages[0].severity).toBe('error');
     expect(messages[0].excerpt).toBe(expected);
-    // TODO: expect(messages[0].url).toBe(expectedUrl);
+    expect(messages[0].url).toBe(expectedUrl);
     expect(messages[0].location.file).toBe(paths.endRange);
     expect(messages[0].location.position).toEqual([[5, 2], [6, 15]]);
   });
@@ -573,28 +573,27 @@ describe('The eslint provider for Linter', () => {
 //   });
 
   // TODO:
-  // describe('when `disableWhenNoEslintConfig` is true', () => {
-  //   let editor;
-  //   let tempFixtureDir;
-  //
-  //   beforeEach(async () => {
-  //     atom.config.set('linter-eslint-node.disabling.disableWhenNoEslintConfig', true);
-  //
-  //     const tempFilePath = await copyFileToTempDir(paths.badInline);
-  //     editor = await atom.workspace.open(tempFilePath);
-  //     tempFixtureDir = path.dirname(tempFilePath);
-  //   });
-  //
-  //   afterEach(() => {
-  //     rimraf.sync(tempFixtureDir);
-  //   });
-  //
-  //   it('does not report errors when no config file is found', async () => {
-  //     const messages = await lint(editor);
-  //
-  //     expect(messages.length).toBe(0);
-  //   });
-  // });
+  describe('when `disableWhenNoEslintConfig` is true', () => {
+    let editor;
+    let tempFixtureDir;
+
+    beforeEach(async () => {
+      atom.config.set('linter-eslint-node.disabling.disableWhenNoEslintConfig', true);
+
+      const tempFilePath = await copyFileToTempDir(paths.badInline);
+      editor = await atom.workspace.open(tempFilePath);
+      tempFixtureDir = path.dirname(tempFilePath);
+    });
+
+    afterEach(() => {
+      rimraf.sync(tempFixtureDir);
+    });
+
+    it('does not report errors when no config file is found', async () => {
+      const messages = await lint(editor);
+      expect(messages.length).toBe(0);
+    });
+  });
 
   // TODO:
   // describe('lets ESLint handle configuration', () => {
@@ -686,18 +685,18 @@ describe('The eslint provider for Linter', () => {
   // });
 
   describe('handles the Show Rule ID in Messages option', () => {
-    // TODO: const expectedUrlRegEx = /https[\S]+eslint-plugin-import[\S]+no-unresolved.md/;
+    const expectedUrlRegEx = /https[\S]+eslint-plugin-import[\S]+no-unresolved.md/;
 
     it('shows the rule ID when enabled', async () => {
       atom.config.set('linter-eslint-node.advanced.showRuleIdInMessage', true);
       const editor = await atom.workspace.open(paths.badImport);
       const messages = await lint(editor);
-      const expected = "[import/no-unresolved] Unable to resolve path to module '../nonexistent'.";
+      const expected = "Unable to resolve path to module '../nonexistent'. (import/no-unresolved)";
 
       expect(messages.length).toBe(1);
       expect(messages[0].severity).toBe('error');
       expect(messages[0].excerpt).toBe(expected);
-      // TODO: expect(messages[0].url).toMatch(expectedUrlRegEx);
+      expect(messages[0].url).toMatch(expectedUrlRegEx);
       expect(messages[0].location.file).toBe(paths.badImport);
       expect(messages[0].location.position).toEqual([[0, 24], [0, 40]]);
       expect(messages[0].solutions).not.toBeDefined();
@@ -712,7 +711,7 @@ describe('The eslint provider for Linter', () => {
       expect(messages.length).toBe(1);
       expect(messages[0].severity).toBe('error');
       expect(messages[0].excerpt).toBe(expected);
-      // TODO: expect(messages[0].url).toMatch(expectedUrlRegEx);
+      expect(messages[0].url).toMatch(expectedUrlRegEx);
       expect(messages[0].location.file).toBe(paths.badImport);
       expect(messages[0].location.position).toEqual([[0, 24], [0, 40]]);
       expect(messages[0].solutions).not.toBeDefined();
@@ -722,17 +721,19 @@ describe('The eslint provider for Linter', () => {
   it("registers an 'ESLint Fix' right click menu command", () => {
     // NOTE: Reaches into the private data of the ContextMenuManager, there is
     // no public method to check this though so...
-    expect(atom.contextMenu.itemSets.some((itemSet) => (
-      // Matching selector...
-      itemSet.selector === 'atom-text-editor:not(.mini), .overlayer'
-      && itemSet.items.some((item) => (
-        // Matching command...
-        item.command === 'linter-eslint:fix-file'
-        // Matching label
-        && item.label === 'ESLint Fix'
-        // And has a function controlling display
-        && typeof item.shouldDisplay === 'function'
+    expect(
+      atom.contextMenu.itemSets.some((itemSet) => (
+        // Matching selector...
+        itemSet.selector === 'atom-text-editor:not(.mini), .overlayer'
+        && itemSet.items.some((item) => (
+          // Matching command...
+          item.command === 'linter-eslint:fix-file'
+          // Matching label
+          && item.label === 'ESLint Fix'
+          // And has a function controlling display
+          && typeof item.shouldDisplay === 'function'
+        ))
       ))
-    )));
+    ).toBe(true);
   });
 });
