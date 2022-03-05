@@ -5,7 +5,8 @@ import * as fs from 'fs';
 import rimraf from 'rimraf';
 import {
   copyFileToTempDir,
-  openAndSetProjectDir
+  openAndSetProjectDir,
+  setTimeout
 } from './helpers';
 
 import Config from '../lib/config';
