@@ -1,8 +1,11 @@
 'use babel';
 
 import * as path from 'path';
-import * as fs from 'fs';
-import { tmpdir } from 'os';
+import {
+  copyFileToDir,
+  copyFileToTempDir,
+  openAndSetProjectDir
+} from './helpers';
 import rimraf from 'rimraf';
 import linterEslintNode from '../lib/main';
 
@@ -28,33 +31,6 @@ const paths = {
   eslintignoreDir: path.join(fixturesDir, 'eslintignore'),
   eslintIgnoreKeyDir: path.join(fixturesDir, 'configs', 'eslintignorekey')
 };
-
-/**
- * Async helper to copy a file from one place to another on the filesystem.
- * @param  {string} fileToCopyPath  Path of the file to be copied
- * @param  {string} destinationDir  Directory to paste the file into
- * @return {Promise<string>}        path of the file in copy destination
- */
-function copyFileToDir(fileToCopyPath, destinationDir) {
-  return new Promise((resolve) => {
-    const destinationPath = path.join(destinationDir, path.basename(fileToCopyPath));
-    const ws = fs.createWriteStream(destinationPath);
-    ws.on('close', () => resolve(destinationPath));
-    fs.createReadStream(fileToCopyPath).pipe(ws);
-  });
-}
-
-/**
- * Utility helper to copy a file into the OS temp directory.
- *
- * @param  {string} fileToCopyPath  Path of the file to be copied
- * @return {Promise<string>}        path of the file in copy destination
- */
-// eslint-disable-next-line import/prefer-default-export
-export async function copyFileToTempDir(fileToCopyPath) {
-  const tempFixtureDir = fs.mkdtempSync(tmpdir() + path.sep);
-  return copyFileToDir(fileToCopyPath, tempFixtureDir);
-}
 
 /**
  * @param {string} expectedMessage
@@ -87,12 +63,6 @@ function getNotification(expectedMessage) {
     // Subscribe to Atom's notifications
     notificationSub = atom.notifications.onDidAddNotification(newNotification);
   });
-}
-
-async function openAndSetProjectDir (fileName, projectDir) {
-  let editor = await atom.workspace.open(fileName);
-  atom.project.setPaths([projectDir]);
-  return editor;
 }
 
 /**
@@ -139,7 +109,6 @@ describe('The eslint provider for Linter', () => {
   const { lint } = linterProvider;
 
   beforeEach(async () => {
-    atom.config.set('linter-eslint-node.advanced.disableFSCache', false);
     atom.config.set('linter-eslint-node.advanced.disableEslintIgnore', true);
 
     // Activate activation hook
