@@ -10,9 +10,12 @@ import { tmpdir } from 'os';
  * @param  {string} destinationDir  Directory to paste the file into
  * @return {Promise<string>}        path of the file in copy destination
  */
-export function copyFileToDir(fileToCopyPath, destinationDir) {
+export function copyFileToDir(fileToCopyPath, destinationDir, newFileName = null) {
   return new Promise((resolve) => {
-    const destinationPath = path.join(destinationDir, path.basename(fileToCopyPath));
+    const destinationPath = path.join(
+      destinationDir,
+      newFileName || path.basename(fileToCopyPath)
+    );
     const ws = fs.createWriteStream(destinationPath);
     ws.on('close', () => resolve(destinationPath));
     fs.createReadStream(fileToCopyPath).pipe(ws);
@@ -26,9 +29,9 @@ export function copyFileToDir(fileToCopyPath, destinationDir) {
  * @return {Promise<string>}        path of the file in copy destination
  */
 // eslint-disable-next-line import/prefer-default-export
-export async function copyFileToTempDir(fileToCopyPath) {
+export async function copyFileToTempDir(fileToCopyPath, newFileName = null) {
   const tempFixtureDir = fs.mkdtempSync(tmpdir() + path.sep);
-  return copyFileToDir(fileToCopyPath, tempFixtureDir);
+  return copyFileToDir(fileToCopyPath, tempFixtureDir, newFileName);
 }
 
 export async function openAndSetProjectDir (fileName, projectDir) {
