@@ -37,9 +37,8 @@ export async function copyFileToTempDir(fileToCopyPath, newFileName = null) {
 export async function openAndSetProjectDir (fileName, projectDir) {
   let editor = await atom.workspace.open(fileName);
   atom.project.setPaths([projectDir]);
-  // Wait for the watcher to get setup before returning. This is a private API,
-  // but it's way more precise than just waiting a fixed amouht of time.
   await atom.project.watcherPromisesByPath[projectDir];
+  await wait(200);
   return editor;
 }
 
