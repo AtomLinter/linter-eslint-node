@@ -5,8 +5,7 @@ import * as fs from 'fs';
 import rimraf from 'rimraf';
 import {
   copyFileToTempDir,
-  openAndSetProjectDir,
-  setTimeout
+  openAndSetProjectDir
 } from './helpers';
 
 import Config from '../lib/config';
@@ -20,16 +19,16 @@ const paths = {
 };
 
 // Returns a Promise that resolves the next time the config changes.
-function untilConfigChanges () {
-  return new Promise((resolve, reject) => {
-    let timeout = setTimeout(reject, 5000);
-    let disposable = Config.onConfigDidChange((config, prevConfig) => {
-      clearTimeout(timeout);
-      disposable.dispose();
-      resolve(config, prevConfig);
-    });
-  });
-}
+// function untilConfigChanges () {
+//   return new Promise((resolve, reject) => {
+//     let timeout = setTimeout(reject, 5000);
+//     let disposable = Config.onConfigDidChange((config, prevConfig) => {
+//       clearTimeout(timeout);
+//       disposable.dispose();
+//       resolve(config, prevConfig);
+//     });
+//   });
+// }
 
 describe('Config module', () => {
 
@@ -146,11 +145,8 @@ describe('Config module', () => {
 
     it('stops treating .linter-eslint as an overrides file if we rename it', async () => {
       expect(Config.get('foo')).toBe('thud');
-
-      let promise = untilConfigChanges();
       fs.renameSync(tempPath, `${tempDir}${path.sep}_linter-eslint`);
-      await promise;
-
+      Config.rescan();
       expect(Config.get('foo')).toBe('');
     });
 
