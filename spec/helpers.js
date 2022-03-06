@@ -37,8 +37,10 @@ export async function copyFileToTempDir(fileToCopyPath, newFileName = null) {
 export async function openAndSetProjectDir (fileName, projectDir) {
   let editor = await atom.workspace.open(fileName);
   atom.project.setPaths([projectDir]);
-  await atom.project.watcherPromisesByPath[projectDir];
-  await wait(200);
+  await race(
+    atom.project.watcherPromisesByPath[projectDir],
+    wait(1000)
+  );
   return editor;
 }
 
@@ -52,4 +54,20 @@ export function wait (ms) {
 
 export function setTimeout (...args) {
   return _setTimeout(...args);
+}
+
+export function race (...promises) {
+  let count = promises.length;
+  let rejectedCount = 0;
+  return new Promise((resolve, reject) => {
+    for (let promise of promises) {
+      // Resolve whenever the first one resolves.
+      promise.then(resolve);
+      // Reject if they all reject.
+      promise.catch(() => {
+        rejectedCount++;
+        if (rejectedCount === count) { reject(); }
+      });
+    }
+  });
 }
