@@ -5,7 +5,8 @@ import * as fs from 'fs';
 import rimraf from 'rimraf';
 import {
   copyFileToTempDir,
-  openAndSetProjectDir
+  openAndSetProjectDir,
+  wait
 } from './helpers';
 
 import Config from '../lib/config';
@@ -20,7 +21,7 @@ const paths = {
 
 
 // Skipping until we can sort out why these are so flaky in CI.
-xdescribe('Config module', () => {
+describe('Config module', () => {
 
   beforeEach(async () => {
     atom.config.set('linter-eslint-node.foo', '');
@@ -118,7 +119,8 @@ xdescribe('Config module', () => {
     it('reacts to changes made to .linter-eslint', async () => {
       editor.setText(JSON.stringify({ foo: 'zort' }));
       await editor.save();
-      Config.update();
+      await wait(1000);
+
       expect(Config.get('foo')).toBe('zort');
     });
 
@@ -127,20 +129,20 @@ xdescribe('Config module', () => {
       let disposable = Config.onConfigDidChange(handler.call);
       editor.setText(JSON.stringify({ foo: 'wat' }));
       await editor.save();
+      await wait(1000);
+
       expect(handler.called()).toBe(true);
-      let [config, prevConfig] = handler.calledWith[0];
+      let [config, prevConfig] = handler.calledWith[0] || [];
       expect(config.foo).toBe('wat');
       expect(prevConfig.foo).toBe('thud');
       disposable.dispose();
     });
 
-    // Skipping test because it relies too much on precise timing of moving
-    // parts; passes locally but tends to fail on CI.
-    // TODO: See about rewriting this.
-    xit('stops treating .linter-eslint as an overrides file if we rename it', async () => {
+    it('stops treating .linter-eslint as an overrides file if we rename it', async () => {
       expect(Config.get('foo')).toBe('thud');
       fs.renameSync(tempPath, `${tempDir}${path.sep}_linter-eslint`);
-      Config.rescan();
+      await wait(1000);
+
       expect(Config.get('foo')).toBe('');
     });
 
