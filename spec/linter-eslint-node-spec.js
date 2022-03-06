@@ -44,8 +44,6 @@ function getNotification(expectedMessage) {
     * @param {Promise<import("atom").Notification>} notification
     */
     const newNotification = (notification) => {
-      console.warn(`Got a notification with text:`, notification.getMessage());
-      console.warn(`We want it to have text:`, expectedMessage);
       if (notification.getMessage() !== expectedMessage) {
         // As the specs execute asynchronously, it's possible a notification
         // from a different spec was grabbed, if the message doesn't match what
@@ -95,7 +93,6 @@ async function makeFixes(textEditor, expectedFixCount) {
   await atom.commands.dispatch(atom.views.getView(textEditor), 'linter-eslint-node:fix-file');
 
   const notification = await notificationPromise;
-  console.log('THE MESSAGE IS NOW:', notification.getMessage());
   expect(notification.getMessage()).toBe(expectedMessage);
   expect(notification.getType()).toBe('success');
 
