@@ -143,7 +143,10 @@ describe('Config module', () => {
       disposable.dispose();
     });
 
-    it('stops treating .linter-eslint as an overrides file if we rename it', async () => {
+    // Skipping test because it relies too much on precise timing of moving
+    // parts; passes locally but tends to fail on CI.
+    // TODO: See about rewriting this.
+    xit('stops treating .linter-eslint as an overrides file if we rename it', async () => {
       expect(Config.get('foo')).toBe('thud');
       fs.renameSync(tempPath, `${tempDir}${path.sep}_linter-eslint`);
       Config.rescan();
