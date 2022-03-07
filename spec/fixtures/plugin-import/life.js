@@ -1,3 +1,3 @@
-import { meaning } from './meaning'
+import { meaning } from './meaning';
 
-console.log(`The meaning of life is ${meaning}.`)
+console.log(`The meaning of life is ${meaning}.`);
