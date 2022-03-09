@@ -1,4 +1,5 @@
 'use babel';
+/* global pass */
 
 import NodePathTester from '../lib/node-path-tester';
 
@@ -26,10 +27,9 @@ describe('Node path tester', () => {
       expect(await NodePathTester.test('node')).not.toBe(false);
       try {
         await NodePathTester.test('fdsfljksdafd');
-        // If we get this far, fail the test
-        expect(false).toBe(true);
+        fail();
       } catch (err) {
-        expect(err instanceof Error).toBe(true);
+        pass();
       }
     });
   });

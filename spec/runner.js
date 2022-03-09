@@ -16,7 +16,21 @@ function setDefaultSettings(namespace, settings) {
 module.exports = createRunner({
   testPackages: ['linter', 'linter-ui-default'],
   timeReporter: true,
-  specHelper: true
+  specHelper: {
+    atom: true,
+    attachToDom: true,
+    ci: true,
+    customMatchers: true,
+    jasmineFocused: true,
+    jasmineJson: true,
+    jasminePass: true,
+    jasmineTagged: true,
+    mockClock: true,
+    mockLocalStorage: true,
+    profile: true,
+    set: true,
+    unspy: true
+  }
 },
 () => {
   beforeEach(() => {
