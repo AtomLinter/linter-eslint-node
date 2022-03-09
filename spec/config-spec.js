@@ -20,7 +20,6 @@ const paths = {
 };
 
 
-// Skipping until we can sort out why these are so flaky in CI.
 describe('Config module', () => {
 
   beforeEach(async () => {
