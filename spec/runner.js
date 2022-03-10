@@ -25,7 +25,7 @@ module.exports = createRunner({
     jasmineJson: true,
     jasminePass: true,
     jasmineTagged: true,
-    mockClock: true,
+    mockClock: false,
     mockLocalStorage: true,
     profile: true,
     set: true,
