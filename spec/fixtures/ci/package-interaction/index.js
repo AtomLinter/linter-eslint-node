@@ -1,0 +1,4 @@
+
+function unusedFunction () {
+  // no-op
+}

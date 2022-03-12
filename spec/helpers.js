@@ -38,10 +38,29 @@ export async function openAndSetProjectDir (fileName, projectDir) {
   let editor = await atom.workspace.open(fileName);
   atom.project.setPaths([projectDir]);
   await race(
-    atom.project.watcherPromisesByPath[projectDir],
+    atom.project.getWatcherPromise(projectDir),
     wait(1000)
   );
   return editor;
+}
+
+export function getNotification (expectedMessage = null) {
+  let promise = new Promise((resolve, reject) => {
+    let notificationSub;
+    let newNotification = notification => {
+      if (expectedMessage && notification.getMessage()) {
+        return;
+      }
+      if (notificationSub !== undefined) {
+        notificationSub.dispose();
+        resolve(notification);
+      } else {
+        reject();
+      }
+    };
+    notificationSub = atom.notifications.onDidAddNotification(newNotification);
+  });
+  return race(promise, wait(3000));
 }
 
 // Grab this before it gets wrapped.

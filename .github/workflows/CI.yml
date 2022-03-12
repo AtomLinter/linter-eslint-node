@@ -26,9 +26,51 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
+      - uses: volta-cli/action@v1.7.0
+      - name: Install multiple Node versions
+        if: runner.os != 'Windows'
+        run: |
+          volta install node@10
+          echo "NODE_10=$(volta which node)" >> $GITHUB_ENV
+          echo "NODE_10_VERSION=$(node --version)" >> $GITHUB_ENV
+          volta install node@latest
+          echo "NODE_LATEST=$(volta which node)" >> $GITHUB_ENV
+          echo "NODE_LATEST_VERSION=$(node --version)" >> $GITHUB_ENV
+          volta install node@16
+          echo "NODE_DEFAULT=$(volta which node)" >> $GITHUB_ENV
+          echo "NODE_DEFAULT_VERSION=$(node --version)" >> $GITHUB_ENV
+      - name: Install multiple Node versions (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          volta install node@10
+          echo "NODE_10=$(volta which node)" >> $env:GITHUB_ENV
+          echo "NODE_10_VERSION=$(node --version)" >> $env:GITHUB_ENV
+          volta install node@latest
+          echo "NODE_LATEST=$(volta which node)" >> $env:GITHUB_ENV
+          echo "NODE_LATEST_VERSION=$(node --version)" >> $env:GITHUB_ENV
+          volta install node@16
+          echo "NODE_DEFAULT=$(volta which node)" >> $env:GITHUB_ENV
+          echo "NODE_DEFAULT_VERSION=$(node --version)" >> $env:GITHUB_ENV
+      - name: Setup dummy ESLint projects
+        run: |
+          mkdir ~/with-eslint-6 && cd ~/with-eslint-6
+          npm init --yes
+          npm install eslint@6
+          cd ..
+
+          mkdir ~/with-eslint-7 && cd ~/with-eslint-7
+          npm init --yes
+          npm install eslint@7
+          cd ..
+
+          mkdir ~/with-eslint-latest && cd ~/with-eslint-latest
+          npm init --yes
+          npm install eslint@latest
+          cd ..
       - name: Install dependencies
         run: |
           apm install
+          apm install linter-eslint
           # ./node_modules/.bin/atom-package-deps .
 
       - name: Run tests 👩🏾‍💻
