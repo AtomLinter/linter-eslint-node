@@ -49,9 +49,11 @@ if (process.env.CI) {
       atom.packages.triggerDeferredActivationHooks();
       atom.packages.triggerActivationHook('core:loaded-shell-environment');
 
+      await atom.packages.loadPackage('linter-eslint');
+
       await atom.packages.activatePackage('language-javascript');
       await atom.packages.activatePackage('linter-eslint-node');
-      await atom.packages.activatePackage('linter-eslint');
+      // await atom.packages.activatePackage('linter-eslint');
     });
 
     describe('With linter-eslint enabled', () => {
