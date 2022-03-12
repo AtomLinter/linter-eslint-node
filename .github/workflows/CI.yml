@@ -26,8 +26,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
-      - name: @volta-cli/action
-        uses: volta-cli/action@v1.7.0
+      - uses: volta-cli/action@v1.7.0
       - name: Install multiple Node versions
         run: |
           volta install node@10
