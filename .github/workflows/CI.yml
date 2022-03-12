@@ -26,9 +26,36 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
+      - name: @volta-cli/action
+        uses: volta-cli/action@v1.7.0
+      - name: Install multiple Node versions
+        run: |
+          volta install node@10
+          echo "NODE_10=$(volta which node)" >> $GITHUB_ENV
+          volta install node@latest
+          echo "NODE_LATEST=$(volta which node)" >> $GITHUB_ENV
+          volta install node@16
+          echo "NODE_DEFAULT=$(volta which node)" >> $GITHUB_ENV
+      - name: Setup dummy ESLint projects
+        run: |
+          mkdir ~/with-eslint-6 && cd ~/with-eslint-6
+          npm init --yes
+          npm install eslint@6
+          cd ..
+
+          mkdir ~/with-eslint-7 && cd ~/with-eslint-7
+          npm init --yes
+          npm install eslint@7
+          cd ..
+
+          mkdir ~/with-eslint-latest && cd ~/with-eslint-latest
+          npm init --yes
+          npm install eslint@latest
+          cd ..
       - name: Install dependencies
         run: |
           apm install
+          apm install linter-eslint
           # ./node_modules/.bin/atom-package-deps .
 
       - name: Run tests 👩🏾‍💻

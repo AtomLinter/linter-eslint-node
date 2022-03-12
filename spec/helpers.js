@@ -44,6 +44,26 @@ export async function openAndSetProjectDir (fileName, projectDir) {
   return editor;
 }
 
+export function getNotification (expectedMessage = null) {
+  let promise = new Promise((resolve, reject) => {
+    let notificationSub;
+    let newNotification = notification => {
+      if (expectedMessage && notification.getMessage()) {
+        return;
+      }
+      if (notificationSub !== undefined) {
+        notificationSub.dispose();
+        resolve(notification);
+      } else {
+        reject();
+      }
+    };
+    notificationSub = atom.notifications.onDidAddNotification(newNotification);
+  });
+
+  return race(promise, wait(3000));
+}
+
 // Grab this before it gets wrapped.
 const _setTimeout = window.setTimeout;
 export function wait (ms) {
