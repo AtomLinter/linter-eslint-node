@@ -328,36 +328,6 @@ describe('The eslint provider for Linter', () => {
     });
   });
 
-  // TODO:
-  // describe('when an eslint cache file is present', () => {
-  //   let editor;
-  //   let tempDir;
-  //
-  //   beforeEach(async () => {
-  //     // Copy the file to a temporary folder
-  //     const tempFixturePath = await copyFileToTempDir(paths.fix);
-  //     editor = await atom.workspace.open(tempFixturePath);
-  //     tempDir = path.dirname(tempFixturePath);
-  //     // Copy the config to the same temporary directory
-  //     await copyFileToDir(paths.config, tempDir);
-  //   });
-  //
-  //   afterEach(() => {
-  //     // Remove the temporary directory
-  //     rimraf.sync(tempDir);
-  //   });
-  //
-  //   it('does not delete the cache file when performing fixes', async () => {
-  //     const tempCacheFile = await copyFileToDir(paths.cache, tempDir);
-  //     const checkCachefileExists = () => {
-  //       fs.statSync(tempCacheFile);
-  //     };
-  //     expect(checkCachefileExists).not.toThrow();
-  //     await makeFixes(editor);
-  //     expect(checkCachefileExists).not.toThrow();
-  //   });
-  // });
-
   describe('Ignores specified rules when editing', () => {
     let expectedPath;
 
@@ -527,7 +497,6 @@ describe('The eslint provider for Linter', () => {
     expect(messages[0].location.position).toEqual([[5, 2], [6, 15]]);
   });
 
-  // TODO:
   describe('when setting `disableWhenNoEslintConfig` is false', () => {
     let editor;
     let tempFilePath;
@@ -558,7 +527,6 @@ describe('The eslint provider for Linter', () => {
     });
   });
 
-  // TODO:
   describe('when `disableWhenNoEslintConfig` is true', () => {
     let editor;
     let tempFixtureDir;
@@ -580,95 +548,6 @@ describe('The eslint provider for Linter', () => {
       expect(messages.length).toBe(0);
     });
   });
-
-  // TODO:
-  // describe('lets ESLint handle configuration', () => {
-  //   it('works when the cache fails', async () => {
-  //     // Ensure the cache is enabled, since we will be taking advantage of
-  //     // a failing in it's operation
-  //     atom.config.set('linter-eslint-node.advanced.disableFSCache', false);
-  //     const fooPath = path.join(paths.badCache, 'temp', 'foo.js');
-  //     const newConfigPath = path.join(paths.badCache, 'temp', '.eslintrc.js');
-  //     const editor = await atom.workspace.open(fooPath);
-  //     function undefMsg(varName) {
-  //       return `[no-undef] '${varName}' is not defined.`;
-  //     }
-  //     // TODO: const expectedUrl = 'https://eslint.org/docs/rules/no-undef';
-  //
-  //     // Trigger a first lint to warm up the cache with the first config result
-  //     let messages = await lint(editor);
-  //     expect(messages.length).toBe(2);
-  //     expect(messages[0].severity).toBe('error');
-  //     expect(messages[0].excerpt).toBe(undefMsg('console'));
-  //     // TODO: expect(messages[0].url).toBe(expectedUrl);
-  //     expect(messages[0].location.file).toBe(fooPath);
-  //     expect(messages[0].location.position).toEqual([[1, 2], [1, 9]]);
-  //     expect(messages[1].severity).toBe('error');
-  //     expect(messages[1].excerpt).toBe(undefMsg('bar'));
-  //     // TODO: expect(messages[1].url).toBe(expectedUrl);
-  //     expect(messages[1].location.file).toBe(fooPath);
-  //     expect(messages[1].location.position).toEqual([[1, 14], [1, 17]]);
-  //
-  //     // Write the new configuration file
-  //     const newConfig = {
-  //       env: {
-  //         browser: true,
-  //       },
-  //     };
-  //     let configContents = `module.exports = ${JSON.stringify(newConfig, null, 2)}\n`;
-  //     fs.writeFileSync(newConfigPath, configContents);
-  //
-  //     // Lint again, ESLint should recognise the new configuration
-  //     // The cached config results are still pointing at the _parent_ file. ESLint
-  //     // would partially handle this situation if the config file was specified
-  //     // from the cache.
-  //     messages = await lint(editor);
-  //     expect(messages.length).toBe(1);
-  //     expect(messages[0].severity).toBe('error');
-  //     expect(messages[0].excerpt).toBe(undefMsg('bar'));
-  //     // TODO: expect(messages[0].url).toBe(expectedUrl);
-  //     expect(messages[0].location.file).toBe(fooPath);
-  //     expect(messages[0].location.position).toEqual([[1, 14], [1, 17]]);
-  //
-  //     // Update the configuration
-  //     newConfig.rules = {
-  //       'no-undef': 'off',
-  //     };
-  //     configContents = `module.exports = ${JSON.stringify(newConfig, null, 2)}\n`;
-  //     fs.writeFileSync(newConfigPath, configContents);
-  //
-  //     // Lint again, if the cache was specifying the file ESLint at this point
-  //     // would fail to update the configuration fully, and would still report a
-  //     // no-undef error.
-  //     messages = await lint(editor);
-  //     expect(messages.length).toBe(0);
-  //
-  //     // Delete the temporary configuration file
-  //     fs.unlinkSync(newConfigPath);
-  //   });
-  // });
-
-  // TODO:
-  // describe('works with HTML files', () => {
-  //   const embeddedScope = 'source.js.embedded.html';
-  //   const scopes = linterProvider.grammarScopes;
-  //
-  //   it('adds the HTML scope when the setting is enabled', () => {
-  //     expect(scopes.includes(embeddedScope)).toBe(false);
-  //     atom.config.set('linter-eslint-node.lintHtmlFiles', true);
-  //     expect(scopes.includes(embeddedScope)).toBe(true);
-  //     atom.config.set('linter-eslint-node.lintHtmlFiles', false);
-  //     expect(scopes.includes(embeddedScope)).toBe(false);
-  //   });
-  //
-  //   it('keeps the HTML scope with custom scopes', () => {
-  //     expect(scopes.includes(embeddedScope)).toBe(false);
-  //     atom.config.set('linter-eslint-node.lintHtmlFiles', true);
-  //     expect(scopes.includes(embeddedScope)).toBe(true);
-  //     atom.config.set('linter-eslint-node.scopes', ['foo.bar']);
-  //     expect(scopes.includes(embeddedScope)).toBe(true);
-  //   });
-  // });
 
   describe('handles the Show Rule ID in Messages option', () => {
     const expectedUrlRegEx = /https[\S]+eslint-plugin-import[\S]+no-unresolved.md/;

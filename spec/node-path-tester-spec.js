@@ -1,5 +1,4 @@
 'use babel';
-/* global pass */
 
 import NodePathTester from '../lib/node-path-tester';
 
