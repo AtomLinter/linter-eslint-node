@@ -114,7 +114,6 @@ npx eslint --init # or without "npx " if installed globally
 
 You can also create the `.eslintrc` file manually. It’s a good idea to consult the [ESLint documentation](http://eslint.org/docs/user-guide/configuring), including the [list of rules](http://eslint.org/docs/rules/).
 
-
 ### .eslintignore
 
 An `.eslintignore` file can be used to tell ESLint that certain files should not be linted. The `eslint` command-line tool will only look for an `.eslintignore` in the directory you run it from, so this file should almost always be placed in your project root. But `linter-eslint-node`, when linting a single file, will respect the first `.eslintignore` it finds, starting from the file’s path and moving upward until it reaches the project root.
