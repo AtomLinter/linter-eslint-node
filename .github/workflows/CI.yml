@@ -100,12 +100,12 @@ jobs:
 
   Release:
     needs: [Test, CommitLint, Lint]
-    if: github.ref == 'refs/heads/master' &&
+    if: github.ref == 'refs/heads/main' &&
       github.event.repository.fork == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: UziTech/action-setup-atom@v1
+      - uses: UziTech/action-setup-atom@v2
       - uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
