@@ -23,15 +23,19 @@ Two reasons:
 
 Depends. The `linter-eslint` package supports **ESLint up through and including v7**. This new package supports **ESLint v7 and greater**. The overlap in v7 is because that’s the one major version where both interfaces, `CLIEngine` and `ESLint`, are available.
 
-If all your projects use ESLint `>=7.0.0`, you can keep this package and uninstall `linter-eslint`. If any of your projects use an older ESLint, you should keep `linter-eslint` installed alongside this package.
+If _all_ your projects use ESLint `>=7.0.0`, you can keep this package and uninstall `linter-eslint`. If _any_ of your projects use an older ESLint, you should keep `linter-eslint` installed alongside this package. **This package can coexist with `linter-eslint`; they won’t get in each other’s way.**
 
 Since they can both lint when ESLint 7.x is present, they have to coordinate who does the linting when both packages are installed. **If `linter-eslint` is installed, this package will not perform linting in ESLint 7.x environments** — only 8.x or greater. If only this package is installed, it will lint with any version of ESLint it supports.
+
+When `linter-eslint` is not installed and this package detects an ESLint version too old for it to support, it will show a notification and invite you to install `linter-eslint`. This behavior can be disabled in package settings.
 
 ## How do I “bring my own Node”?
 
 To run your version of Node, `linter-eslint-node` needs to know _where_ your version of Node is, and that question sometimes has a complex answer.
 
-The command `Linter Eslint Node: Debug` will show a panel with the version of Node that this package will use for a particular project.
+The **Path to Node binary** option in this package’s settings will allow you to set the path to your node binary. It defaults to the bare value `node`, which will work if `node` is in your `PATH`.
+
+The command **Linter Eslint Node: Debug** will show a panel with the version of Node that this package will use for a particular project.
 
 ### First: just see if it works
 
@@ -45,13 +49,15 @@ If you manage several versions of Node using a tool like [NVM][], you might stil
 
 If you do all these things, the Atom windows you spawn will inherit the environment defined by your shell, including the current value of `$PATH`.
 
-It’s also likely to work if you use a version manager like [Volta][] or [asdf][] in which there’s a single “shim” executable with a consistent location.
-
 ### Failing that: set it explicitly
 
-If you use one version of Node on your system, and this package somehow hasn’t inferred it from your `$PATH` variable, then you can use the package settings page to set “Node Binary” manually. On macOS or Linux, `which node` will typically retrieve this path.
+If you use one version of Node on your system, and this package somehow hasn’t inferred it from your `$PATH` variable, then you can use the package settings page to set **Path to Node binary** manually. On macOS or Linux, `which node` will typically retrieve this path.
 
-If you manage several versions of node with [NVM][] or a similar tool, and sometimes don’t launch a project via the terminal, you might notice this package using your the path to your NVM-default version of Node instead of the correct version for that project.
+This should also work if you use a Node version manager like [Volta][] or [asdf][] in which there’s a single “shim” executable with a consistent location.
+
+#### Per-project settings
+
+If you manage several versions of Node with [NVM][] or a similar tool, and sometimes don’t launch a project via the terminal, you might notice this package using your the path to your NVM-default version of Node instead of the correct version for that project — or else failing to see your Node binary altogether.
 
 You can fix this by bypassing our heuristics and setting your Node binary path **on a per-project basis** using one of several methods.
 
@@ -83,9 +89,13 @@ Keep in mind you’ll have to update this setting whenever you update the versio
 
 ## Which ESLint version will this package use?
 
-`linter-eslint-node` will look for a version of `eslint` local to your project, as long as it’s at least v7.0.0. Ideally, this would be installed into a `node_modules` folder in the project root. If it’s in a different location for whatever reason, you can use the `advanced.localNodeModules` setting to specify a path (relative or absolute) in either your `config.cson` or your `.linter-eslint` file.
+`linter-eslint-node` will look for a version of ESLint local to your project, as long as it’s at least v7.0.0. Ideally, this would be installed into a `node_modules` folder in the project root, but it’ll find anything in `module.paths`.
 
-If it doesn’t find an ESLint in your project, `linter-eslint-node` will fall back to the version it ships with.
+If you can run `node -e "require('eslint')"` from your project root and not get an error, then `linter-eslint-node` should find your copy of ESLint just fine.
+
+If it doesn’t find an ESLint in your project, `linter-eslint-node` will fall back to the version it ships with, which is typically the most recent major release.
+
+The command **Linter Eslint Node: Debug**, when run from a file inside your project, will report which version of ESLint this package would use to lint that file, and whether it’s yours or the package’s built-in version.
 
 ## Other configuration
 
@@ -93,6 +103,8 @@ Common JavaScript-derivative languages (TypeScript, Flow, etc.) will also trigge
 
 
 ## Using ESLint
+
+### .eslintrc
 
 Recent versions of ESLint don’t use any rules by default. For all but the most basic of usages, you must create an `.eslintrc` file in your project root:
 
@@ -102,9 +114,14 @@ npx eslint --init # or without "npx " if installed globally
 
 You can also create the `.eslintrc` file manually. It’s a good idea to consult the [ESLint documentation](http://eslint.org/docs/user-guide/configuring), including the [list of rules](http://eslint.org/docs/rules/).
 
+
+### .eslintignore
+
+An `.eslintignore` file can be used to tell ESLint that certain files should not be linted. The `eslint` command-line tool will only look for an `.eslintignore` in the directory you run it from, so this file should almost always be placed in your project root. But `linter-eslint-node`, when linting a single file, will respect the first `.eslintignore` it finds, starting from the file’s path and moving upward until it reaches the project root.
+
 ### Plugins
 
-It’s better practice to install ESLint plugins locally in your project, but plugins installed globally will also work just fine. But keep in mind that either way you’ll need to define an `.eslintrc` file in your project that includes those plugins.
+It’s better practice to install ESLint plugins locally in your project, but plugins installed globally will also work just fine. Just make sure to reference those plugins in your `.eslintrc`.
 
 
 [ECMAScript modules]: https://nodejs.org/api/esm.html

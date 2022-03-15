@@ -35,7 +35,8 @@
   ],
   "configSchema": {
     "scopes": {
-      "title": "List of scopes to run ESLint on. Run `Editor: Log Cursor Scope` to determine the scopes for a file. To lint JavaScript inside HTML files, add `source.js.embedded.html` to this list and be sure that `eslint-plugin-html` is installed and added to your `.eslintrc`.",
+      "title": "List of scopes to run ESLint on",
+      "description": "Run `Editor: Log Cursor Scope` to determine the scopes for a file. To lint JavaScript inside HTML files, add `source.js.embedded.html` to this list and be sure that `eslint-plugin-html` is installed and added to your `.eslintrc`.",
       "type": "array",
       "default": [
         "source.js",
@@ -51,18 +52,18 @@
       },
       "order": 1
     },
-    "warnAboutOldEslint": {
-      "title": "Warn about old ESLint versions",
-      "description": "If your project’s ESLint is too old for this package to support, and you don’t have `linter-eslint` installed, you’ll see a single warning message after your first lint attempt, and no further messages until you reopen the project. If you’d rather not receive the warning under any circumstances, disable this option.",
-      "type": "boolean",
-      "default": true,
-      "order": 2
-    },
     "nodeBin": {
       "title": "Path to Node binary",
       "description": "The path to the version of Node that this linter should run. If you have one global installation of node, `which node` should give you the correct value. If you use NVM or another Node version manager, `which node` within this project's directory should give you the correct value. If you need this value to vary on a per-project basis, consult the README for various options.",
       "type": "string",
       "default": "node",
+      "order": 2
+    },
+    "warnAboutOldEslint": {
+      "title": "Warn about old ESLint versions",
+      "description": "If your project’s ESLint is too old for this package to support, and you don’t have `linter-eslint` installed, you’ll see a single warning message after your first lint attempt, and no further messages until you reopen the project. If you’d rather not receive the warning under any circumstances, disable this option.",
+      "type": "boolean",
+      "default": true,
       "order": 3
     },
     "autofix": {
@@ -102,7 +103,7 @@
       "properties": {
         "disableWhenNoEslintConfig": {
           "title": "Disable when no ESLint config is found",
-          "description": "Will do nothing when no ESLint config is found in either `.package.json` or `.eslintrc` instead of showing an error.",
+          "description": "Will do nothing when no ESLint config is found in either `package.json` or `.eslintrc` instead of showing an error.",
           "type": "boolean",
           "default": true,
           "order": 1
@@ -140,7 +141,7 @@
         },
         "useCache": {
           "title": "Use Cache",
-          "description": "When this package creates an instance of `ESLint` for a file, it will try to re-use that instance in the future for the same file or for other files in that directory. If you’re noticing odd behavior, disable this option and reload your window to see if it’s cache-related.",
+          "description": "When this package creates an instance of `ESLint`, it will try to re-use that instance when linting other files in your project. If you’re noticing odd behavior, disable this option and reload your window to see if it’s cache-related.",
           "type": "boolean",
           "default": true,
           "order": 3
