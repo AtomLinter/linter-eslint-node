@@ -114,6 +114,8 @@ jobs:
       - name: Release 🎉
         uses: cycjimmy/semantic-release-action@v2
         with:
+          branches: |
+            ['main']
           extends: |
             @semantic-release/apm-config
         env:
