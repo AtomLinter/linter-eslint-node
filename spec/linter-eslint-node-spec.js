@@ -160,8 +160,12 @@ describe('The eslint provider for Linter', () => {
   });
 
   it('finds nothing wrong with a valid file', async () => {
+    const cwd = process.cwd();
+
     const editor = await atom.workspace.open(paths.good);
     const messages = await lint(editor);
+
+    expect(cwd).toEqual(process.cwd());
 
     expect(messages.length).toBe(0);
   });
