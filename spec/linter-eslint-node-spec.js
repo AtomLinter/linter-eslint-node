@@ -16,6 +16,7 @@ const paths = {
   good: path.join(fixturesDir, 'files', 'with-config', 'good.js'),
   bad: path.join(fixturesDir, 'files', 'with-config', 'bad.js'),
   badInline: path.join(fixturesDir, 'files', 'inline', 'badInline.js'),
+  dynamicCwd: path.join(fixturesDir, 'dynamic-cwd', 'logical-or-assignment.js'),
   empty: path.join(fixturesDir, 'files', 'with-config', 'empty.js'),
   fix: path.join(fixturesDir, 'files', 'with-config', 'fix.js'),
   cache: path.join(fixturesDir, 'files', 'with-config', '.eslintcache'),
@@ -162,6 +163,18 @@ describe('The eslint provider for Linter', () => {
   it('finds nothing wrong with a valid file', async () => {
     const editor = await atom.workspace.open(paths.good);
     const messages = await lint(editor);
+
+    expect(messages.length).toBe(0);
+  });
+
+  it('finds no cwd problems with a valid file (and proper dynamic ecmaVersion)', async () => {
+    const cwd = process.cwd();
+
+    const editor = await atom.workspace.open(paths.dynamicCwd);
+    const messages = await lint(editor);
+
+    expect(cwd).toEqual(process.cwd());
+    process.chdir(cwd);
 
     expect(messages.length).toBe(0);
   });
