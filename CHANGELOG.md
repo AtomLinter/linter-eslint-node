@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/AtomLinter/linter-eslint-node/compare/v1.0.3...v1.0.4) (2022-03-20)
+
+
+### Bug Fixes
+
+* set cwd based on ESLint directory; fixes [#13](https://github.com/AtomLinter/linter-eslint-node/issues/13) ([ad79020](https://github.com/AtomLinter/linter-eslint-node/commit/ad790209496f5d5bf47732f56efaa75e415211ed))
+
 ## [1.0.3](https://github.com/AtomLinter/linter-eslint-node/compare/v1.0.2...v1.0.3) (2022-03-15)
 
 
