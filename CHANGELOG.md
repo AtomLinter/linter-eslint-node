@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/AtomLinter/linter-eslint-node/compare/v1.0.4...v1.0.5) (2022-03-25)
+
+
+### Bug Fixes
+
+* check for existence of `docs` before accessing `url` ([#17](https://github.com/AtomLinter/linter-eslint-node/issues/17)) ([f160afa](https://github.com/AtomLinter/linter-eslint-node/commit/f160afa8875cb12b9a966a8958024bd0f0f4d3c6))
+
 ## [1.0.4](https://github.com/AtomLinter/linter-eslint-node/compare/v1.0.3...v1.0.4) (2022-03-20)
 
 
