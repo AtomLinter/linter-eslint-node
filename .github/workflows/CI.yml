@@ -19,8 +19,8 @@ jobs:
             atom_channel: stable
             node_version: '*'
     steps:
-      - uses: actions/checkout@v2
-      - uses: UziTech/action-setup-atom@v2
+      - uses: actions/checkout@v3
+      - uses: UziTech/action-setup-atom@v3
         with:
           version: ${{ matrix.atom_channel }}
       - uses: actions/setup-node@v3
@@ -79,7 +79,7 @@ jobs:
   Lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -92,7 +92,7 @@ jobs:
   CommitLint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Commit lint ✨
@@ -104,8 +104,8 @@ jobs:
       github.event.repository.fork == false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: UziTech/action-setup-atom@v2
+      - uses: actions/checkout@v3
+      - uses: UziTech/action-setup-atom@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
