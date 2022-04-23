@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/AtomLinter/linter-eslint-node/compare/v1.0.5...v1.0.6) (2022-04-23)
+
+
+### Bug Fixes
+
+* use non-strict ndjson parsing ([#21](https://github.com/AtomLinter/linter-eslint-node/issues/21)) ([78cda66](https://github.com/AtomLinter/linter-eslint-node/commit/78cda66d45e13bb39a7870c8c58d18eba7ebea75)), closes [#20](https://github.com/AtomLinter/linter-eslint-node/issues/20)
+
 ## [1.0.5](https://github.com/AtomLinter/linter-eslint-node/compare/v1.0.4...v1.0.5) (2022-03-25)
 
 
