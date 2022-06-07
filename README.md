@@ -1,6 +1,6 @@
 # linter-eslint-node package
 
-A “bring-your-own-Node” linter for newer versions of ESLint: v7 and above.
+A “bring-your-own-Node” linter for newer versions of ESLint: v8 and above.
 
 ## Installation
 
@@ -15,19 +15,19 @@ The `linter` package will be installed for you if it’s not already present in 
 
 Two reasons:
 
-1. After it was deprecated in v7, the `CLIEngine` class that `linter-eslint` relied upon was removed from ESLint in v8. Its replacement removed a few methods that supported some of `linter-eslint`’s features, making it impossible to abstract away the difference between the two, or to deliver an experience that’s consistent across ESLint versions.
+1. After it was deprecated in v8, the `CLIEngine` class that `linter-eslint` relied upon was removed from ESLint in v8. Its replacement removed a few methods that supported some of `linter-eslint`’s features, making it impossible to abstract away the difference between the two, or to deliver an experience that’s consistent across ESLint versions.
 
 2. As the Node world slowly migrates away from CommonJS and toward [ECMAScript modules][], certain high-profile ESLint plugins now offer native ESM versions. This is not a problem for any recent version of Node, but it is a problem for `linter-eslint`’s practice of linting within a worker script using _Atom’s_ version of Node, which is too old to support ESM and is unlikely to be updated in the near future. The solution to this problem is to switch to a “bring-your-own-Node” model that runs the worker script inside the same version of Node that your project itself uses.
 
 ## Should I uninstall linter-eslint?
 
-Depends. The `linter-eslint` package supports **ESLint up through and including v7**. This new package supports **ESLint v7 and greater**. The overlap in v7 is because that’s the one major version where both interfaces, `CLIEngine` and `ESLint`, are available.
+Depends. The `linter-eslint` package supports **ESLint up through and including v7**. This new package supports **ESLint v8 and greater**.
 
-If _all_ your projects use ESLint `>=7.0.0`, you can keep this package and uninstall `linter-eslint`. If _any_ of your projects use an older ESLint, you should keep `linter-eslint` installed alongside this package. **This package can coexist with `linter-eslint`; they won’t get in each other’s way.**
+If _all_ your projects use ESLint `>=8.0.0`, you can keep this package and uninstall `linter-eslint`. If _any_ of your projects use an older ESLint, you should keep `linter-eslint` installed alongside this package.
 
-Since they can both lint when ESLint 7.x is present, they have to coordinate who does the linting when both packages are installed. **If `linter-eslint` is installed, this package will not perform linting in ESLint 7.x environments** — only 8.x or greater. If only this package is installed, it will lint with any version of ESLint it supports.
+If only this package is installed, it will lint with any version of ESLint it supports.
 
-When `linter-eslint` is not installed and this package detects an ESLint version too old for it to support, it will show a notification and invite you to install `linter-eslint`. This behavior can be disabled in package settings.
+When `linter-eslint` is not installed and this package detects an ESLint version too old for it to support, it will show a notification and invite you to install `linter-eslint`. This behaviour can be disabled in package settings.
 
 ## How do I “bring my own Node”?
 
@@ -89,7 +89,7 @@ Keep in mind you’ll have to update this setting whenever you update the versio
 
 ## Which ESLint version will this package use?
 
-`linter-eslint-node` will look for a version of ESLint local to your project, as long as it’s at least v7.0.0. Ideally, this would be installed into a `node_modules` folder in the project root, but it’ll find anything in `module.paths`.
+`linter-eslint-node` will look for a version of ESLint local to your project, as long as it’s at least v8.0.0. Ideally, this would be installed into a `node_modules` folder in the project root, but it’ll find anything in `module.paths`.
 
 If you can run `node -e "require('eslint')"` from your project root and not get an error, then `linter-eslint-node` should find your copy of ESLint just fine.
 
