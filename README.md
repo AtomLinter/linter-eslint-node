@@ -15,7 +15,7 @@ The `linter` package will be installed for you if it’s not already present in 
 
 Two reasons:
 
-1. After it was deprecated in v8, the `CLIEngine` class that `linter-eslint` relied upon was removed from ESLint in v8. Its replacement removed a few methods that supported some of `linter-eslint`’s features, making it impossible to abstract away the difference between the two, or to deliver an experience that’s consistent across ESLint versions.
+1. After it was deprecated in v7, the `CLIEngine` class that `linter-eslint` relied upon was removed from ESLint in v8. Its replacement removed a few methods that supported some of `linter-eslint`’s features, making it impossible to abstract away the difference between the two, or to deliver an experience that’s consistent across ESLint versions.
 
 2. As the Node world slowly migrates away from CommonJS and toward [ECMAScript modules][], certain high-profile ESLint plugins now offer native ESM versions. This is not a problem for any recent version of Node, but it is a problem for `linter-eslint`’s practice of linting within a worker script using _Atom’s_ version of Node, which is too old to support ESM and is unlikely to be updated in the near future. The solution to this problem is to switch to a “bring-your-own-Node” model that runs the worker script inside the same version of Node that your project itself uses.
 
