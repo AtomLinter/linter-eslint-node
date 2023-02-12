@@ -1,0 +1,3 @@
+
+// (Intentionally invalid)
+function foo () {

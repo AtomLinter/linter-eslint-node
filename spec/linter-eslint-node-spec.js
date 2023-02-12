@@ -32,7 +32,8 @@ const paths = {
   badImport: path.join(fixturesDir, 'import-resolution', 'nested', 'badImport.js'),
   fixablePlugin: path.join(fixturesDir, 'plugin-import', 'life.js'),
   eslintignoreDir: path.join(fixturesDir, 'eslintignore'),
-  eslintIgnoreKeyDir: path.join(fixturesDir, 'configs', 'eslintignorekey')
+  eslintIgnoreKeyDir: path.join(fixturesDir, 'configs', 'eslintignorekey'),
+  noConfig: path.join(fixturesDir, 'no-config', 'test.js')
 };
 
 /**
@@ -643,4 +644,27 @@ describe('The eslint provider for Linter', () => {
       ))
     ).toBe(true);
   });
+
+  describe("When a non-project file is present", () => {
+    let editorOutsideProject;
+    beforeEach(async () => {
+      const tempFilePathInside = await copyFileToTempDir(paths.bad);
+      const tempFilePathOutside = await copyFileToTempDir(paths.noConfig);
+
+      let projectDir = path.resolve(path.join(tempFilePathInside, '..'));
+      await openAndSetProjectDir(tempFilePathInside, projectDir);
+      editorOutsideProject = await atom.workspace.open(tempFilePathOutside);
+    });
+
+    fit("does not suspend when it can't find that file's .eslintrc", async () => {
+      expect(linterEslintNode.inactive).toBe(false);
+
+      // Fails to lint because of lack of `.eslintrc`.
+      const messages = await lint(editorOutsideProject);
+      expect(messages.length).toBe(0);
+
+      expect(linterEslintNode.inactive).toBe(false);
+    });
+  });
+
 });
