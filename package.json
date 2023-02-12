@@ -2,7 +2,7 @@
   "name": "linter-eslint-node",
   "main": "./lib/main",
   "version": "1.0.6",
-  "description": "Lint JavaScript on the fly, using ESLint (v7 or greater)",
+  "description": "Lint JavaScript on the fly, using ESLint (v8 or greater)",
   "keywords": [
     "linter-eslint",
     "eslint"

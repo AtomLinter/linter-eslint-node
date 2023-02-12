@@ -11,14 +11,18 @@ import { tmpdir } from 'os';
  * @return {Promise<string>}        path of the file in copy destination
  */
 export function copyFileToDir(fileToCopyPath, destinationDir, newFileName = null) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const destinationPath = path.join(
       destinationDir,
       newFileName || path.basename(fileToCopyPath)
     );
+    const rs = fs.createReadStream(fileToCopyPath);
     const ws = fs.createWriteStream(destinationPath);
+
     ws.on('close', () => resolve(destinationPath));
-    fs.createReadStream(fileToCopyPath).pipe(ws);
+    ws.on('error', (error) => reject(error));
+
+    rs.pipe(ws);
   });
 }
 

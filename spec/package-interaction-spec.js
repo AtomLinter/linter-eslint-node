@@ -143,18 +143,23 @@ if (process.env.CI) {
         await deleteFilesFromProject(paths.eslint6);
       });
 
-      it('should lint when opening an ESLint@7 project', async () => {
+      it('should prompt to install linter-eslint when opening an ESLint@7 project', async () => {
         await copyFilesIntoProject(paths.eslint7);
         let editor = await openAndSetProjectDir(
           Path.join(paths.eslint7, 'index.js'),
           paths.eslint7
         );
-        expect(atom.packages.isPackageActive('linter-eslint')).toBe(false);
 
-        await expectNoNotification(async () => {
-          let results = await lint(editor);
-          expect(results.length).toBe(1);
-        });
+        const notificationPromise = getNotification();
+        let results = await lint(editor);
+        expect(results).toBe(null);
+        let notification = await notificationPromise;
+
+        if (!notification) {
+          fail('Did not get notification');
+        } else {
+          expect(notification.getMessage()).toBe('linter-eslint-node: Incompatible ESLint');
+        }
 
         await deleteFilesFromProject(paths.eslint7);
       });
