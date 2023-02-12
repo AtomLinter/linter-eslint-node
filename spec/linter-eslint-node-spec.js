@@ -4,7 +4,8 @@ import * as path from 'path';
 import {
   copyFileToDir,
   copyFileToTempDir,
-  openAndSetProjectDir
+  openAndSetProjectDir,
+  wait
 } from './helpers';
 import rimraf from 'rimraf';
 import linterEslintNode from '../lib/main';
@@ -21,6 +22,7 @@ const paths = {
   fix: path.join(fixturesDir, 'files', 'with-config', 'fix.js'),
   cache: path.join(fixturesDir, 'files', 'with-config', '.eslintcache'),
   config: path.join(fixturesDir, 'configs', '.eslintrc.yml'),
+  configThatChanges: path.join(fixturesDir, 'files', 'with-config', '.eslintrc.js'),
   ignored: path.join(fixturesDir, 'eslintignore', 'ignored.js'),
   endRange: path.join(fixturesDir, 'end-range', 'no-unreachable.js'),
   badCache: path.join(fixturesDir, 'badCache'),
@@ -593,6 +595,33 @@ describe('The eslint provider for Linter', () => {
       expect(messages[0].location.file).toBe(paths.badImport);
       expect(messages[0].location.position).toEqual([[0, 24], [0, 40]]);
       expect(messages[0].solutions).not.toBeDefined();
+    });
+  });
+
+  describe("when the .eslintrc is changed", () => {
+    let configEditor, originalConfig;
+    beforeEach(async () => {
+      configEditor = await atom.workspace.open(paths.configThatChanges);
+      originalConfig = configEditor.getText();
+      atom.config.set('linter-eslint-node.advanced.useCache', true);
+    });
+
+    afterEach(async () => {
+      configEditor.setText(originalConfig);
+      await configEditor.save();
+    });
+
+    it('reacts to the new rules', async () => {
+      const editor = await atom.workspace.open(paths.good);
+      let messages = await lint(editor);
+      expect(messages.length).toBe(0);
+
+      let newConfig = originalConfig.replace(`"never"`, `"always"`);
+      configEditor.setText(newConfig);
+      await configEditor.save();
+      await wait(1000);
+      messages = await lint(editor);
+      expect(messages.length).toBe(2);
     });
   });
 
