@@ -656,7 +656,7 @@ describe('The eslint provider for Linter', () => {
       editorOutsideProject = await atom.workspace.open(tempFilePathOutside);
     });
 
-    fit("does not suspend when it can't find that file's .eslintrc", async () => {
+    it("does not suspend when it can't find that file's .eslintrc", async () => {
       expect(linterEslintNode.inactive).toBe(false);
 
       // Fails to lint because of lack of `.eslintrc`.
