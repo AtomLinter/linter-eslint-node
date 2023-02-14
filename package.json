@@ -15,6 +15,7 @@
   "devDependencies": {
     "atom-jasmine3-test-runner": "^5.2.11",
     "eslint-plugin-import": "^2.25.4",
+    "patch-package": "^7.0.0",
     "rimraf": "^3.0.2"
   },
   "package-deps": [
@@ -158,6 +159,7 @@
   },
   "scripts": {
     "lint": "eslint . --fix",
+    "postinstall": "patch-package",
     "test.lint": "eslint .",
     "test": "atom --test spec"
   },
