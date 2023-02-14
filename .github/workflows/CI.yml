@@ -6,23 +6,16 @@ on:
 
 jobs:
   Test:
-    name: ${{ matrix.os }} - Atom ${{ matrix.atom_channel }} - node ${{ matrix.node_version }}
+    name: ${{ matrix.os }} - Pulsar - node ${{ matrix.node_version }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        atom_channel: [stable, beta]
-        node_version: ['lts/*']
-        include:
-          - os: ubuntu-latest
-            atom_channel: stable
-            node_version: '*'
+        node_version: ['lts/*', '*']
     steps:
       - uses: actions/checkout@v3
-      - uses: UziTech/action-setup-atom@v3
-        with:
-          version: ${{ matrix.atom_channel }}
+      - uses: pulsar-edit/action-pulsar-dependency@v3
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
@@ -69,12 +62,14 @@ jobs:
           cd ..
       - name: Install dependencies
         run: |
-          apm install
-          apm install linter-eslint
+          ppm install
+          ppm install linter-eslint
           # ./node_modules/.bin/atom-package-deps .
 
       - name: Run tests 👩🏾‍💻
-        run: npm run test
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: pulsar --test spec
 
   Lint:
     runs-on: ubuntu-latest
