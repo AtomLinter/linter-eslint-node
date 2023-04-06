@@ -5,7 +5,7 @@ A “bring-your-own-Node” linter for newer versions of ESLint: v8 and above.
 ## Installation
 
 ```ShellSession
-apm install linter-eslint-node
+ppm install AtomLinter/linter-eslint-node
 ```
 
 The `linter` package will be installed for you if it’s not already present in your Atom installation. If you’re using an alternative `linter-*` consumer, the `linter` package can be disabled.
