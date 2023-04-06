@@ -145,6 +145,13 @@
           "type": "boolean",
           "default": true,
           "order": 3
+        },
+        "enableLogging": {
+          "title": "Enable Logging",
+          "description": "Log diagnostic messages to the developer console. If you want to file a bug against `linter-eslint-node`, these messages may be useful.",
+          "type": "boolean",
+          "default": false,
+          "order": 4
         }
       }
     }
