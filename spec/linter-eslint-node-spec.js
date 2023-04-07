@@ -667,4 +667,20 @@ describe('The eslint provider for Linter', () => {
     });
   });
 
+  describe("When JobManager#killWorker is called", () => {
+    it('kills the worker', async () => {
+      let { jobManager } = linterEslintNode;
+      expect(!!jobManager).toBe(true);
+
+      let editor = await atom.workspace.open(paths.bad);
+      atom.project.setPaths([projectDir]);
+
+      // Kick off a job, then immediately kill the worker.
+      lint(editor);
+      expect(!!jobManager.worker).toBe(true);
+      jobManager.killWorker();
+      expect(jobManager.worker.killed).toBe(true);
+    });
+  });
+
 });
