@@ -54,11 +54,20 @@ jobs:
           npm init --yes
           npm install eslint@latest
           cd ..
-      - name: Install dependencies
+      - name: Install dependencies (Mac)
+        if: runner.os == 'Windows'
+        run: |
+          ppm install
+          ppm install linter-eslint
+          npx atom-package-deps .
+      - name: Install dependencies (Windows)
+        if: runner.os != 'Windows'
         run: |
           pulsar --package install
+          pulsar --package install linter-eslint
           npx atom-package-deps .
-          pulsar --package install AtomLinter/linter-eslint
+      - name: List dependencies
+        run: |
           pulsar --package list --enabled --packages
 
       - name: Run tests 👩🏾‍💻
