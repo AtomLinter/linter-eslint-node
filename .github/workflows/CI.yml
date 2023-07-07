@@ -58,6 +58,7 @@ jobs:
         run: |
           ppm install
           ppm install linter-eslint
+          npm install
           npx atom-package-deps .
       - name: Install dependencies
         if: runner.os != 'Windows'
