@@ -2,7 +2,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main, pulsar-ci]
+    branches: [main]
 
 jobs:
   Test:
@@ -11,7 +11,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
     steps:
       - uses: actions/checkout@v3
       - uses: pulsar-edit/action-pulsar-dependency@v3.3
@@ -57,9 +60,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           ppm install
-          ppm install linter-eslint
           npm install
-          npx atom-package-deps .
+          npx atom-package-deps ./windows-deps
       - name: Install dependencies
         if: runner.os != 'Windows'
         run: |
