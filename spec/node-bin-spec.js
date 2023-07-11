@@ -1,4 +1,5 @@
 'use babel';
+import { homedir } from 'os';
 import * as Path from 'path';
 import * as FS from 'fs';
 import {
@@ -9,7 +10,7 @@ import {
 import rimraf from 'rimraf';
 import linterEslintNode from '../lib/main';
 
-const root = Path.normalize(process.env.HOME);
+const root = Path.normalize(homedir());
 const paths = {
   eslint6: Path.join(root, 'with-eslint-6'),
   eslint7: Path.join(root, 'with-eslint-7'),
